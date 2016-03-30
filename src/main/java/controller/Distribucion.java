@@ -9,19 +9,24 @@ package controller;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 
+/**
+ * @author David Mojica
+ * @version 1.0 29 de Marzo de 2016
+ */
 public final class Distribucion 
 {
-    double num_seg = 10.0;
-    
+    double num_seg = 10.0;    
     double W;
     double E = 0.00001;
     double dof;
-    double resultado;
-    
+    double resultado;    
     LinkedList multiplicador = new LinkedList();
-    
-    
-    /* Metodo constructor*/
+        
+    /**
+    * Constructor de clase     
+    * @param x tipo double
+    * @param degrees_of_freedom tipo double
+    */
     public Distribucion(double x, double degrees_of_freedom)
     {
         dof = degrees_of_freedom;
@@ -49,7 +54,11 @@ public final class Distribucion
         resultado = realizarSumatoria(lista_terms);
     }
     
-    /* Metodo*/
+    /**
+     * Método que devuelve el resultado con el formato "##0.00000"
+     * @return una variable tipo String
+     * @since incluido desde la version 1.0
+    */
     public String getDistribucion()
     {
         DecimalFormat formato = new DecimalFormat("##0.00000");
@@ -57,7 +66,11 @@ public final class Distribucion
         return impresion;
     }
     
-    /* Metodo */
+    /**
+     * Método que crea una lista desde 0 hasta el valor de la variable num_seg
+     * @return un objeto de tipo LinkedList
+     * @since incluido desde la version 1.0
+    */
     public LinkedList crearListaI()
     {
         LinkedList lista = new LinkedList();
@@ -67,8 +80,14 @@ public final class Distribucion
         }
         return lista;
     }
-       
-    /* Metodo */
+    
+    /**
+     * Método que crea una lista desde 0 hasta el valor de num_seg 
+     * sumando el valor de W = ancho del segmento para la distribución
+     * @param lista Linkedlist con los valores y el tamaño de la lista 
+     * @return un objeto de tipo LinkedList
+     * @since incluido desde la version 1.0
+    */
     public LinkedList crearListaXi(LinkedList lista)
     {
         double Xi = 0;
@@ -81,7 +100,13 @@ public final class Distribucion
         return lista_xi;
     }
     
-    /* Metodo */
+    /**
+     * Método que obtiene el resultado de la ecuación 1 + (Xi * Xi)/dof
+     * para cada elemento de una lista ligada
+     * @param lista Linkedlist con los valores Xi
+     * @return un objeto de tipo LinkedList
+     * @since incluido desde la version 1.0
+    */
     public LinkedList obtenerSuma(LinkedList lista)
     {
         LinkedList lista_suma = new LinkedList();
@@ -94,7 +119,14 @@ public final class Distribucion
         return lista_suma;
     }
     
-    /* Metodo */
+    /**
+     * Método que obtiene el resultado de la ecuación 1 + (Xi * Xi)/dof
+     * elevado a -(dof+1) / 2
+     * para cada elemento de una lista ligada
+     * @param lista Linkedlist con los valores de l1 + (Xi * Xi)/dof
+     * @return un objeto de tipo LinkedList
+     * @since incluido desde la version 1.0
+    */
     public LinkedList obtenerPotencia(LinkedList lista)
     {
         LinkedList lista_potencia = new LinkedList();
@@ -107,7 +139,13 @@ public final class Distribucion
         return lista_potencia;
     }
     
-    /* Metodo ObtenerGamma */
+    
+    /**
+     * Método que obtiene la función gamma de un número
+     * @param numero double del que se obtiene la función gamma
+     * @return un double resultado de la función gamma
+     * @since incluido desde la version 1.0
+    */
     public double obtenerGamma(double numero)
     {
         double gamma = 0;
@@ -134,14 +172,25 @@ public final class Distribucion
         return gamma;
     }
     
-    /* Metodo */
+    /**
+     * Método que obtiene el primer multiplicador para hallar la distribución t
+     * por medio de la regla de Simpson
+     * @return un double que representa el primer factor de la regla de Simpson
+     * @since incluido desde la version 1.0
+    */
     public double obtenerDivisionGamma()
     {
         double division_gamma = obtenerGamma(((dof + 1.0) / 2.0)) / (Math.pow((dof * Math.PI), 0.5) * obtenerGamma(dof/2.0));
         return division_gamma;        
     }
     
-    /* Metodo */
+    /**
+     * Método que obtiene F(Xi)
+     * @param division_gamma double primer factor para la regla de Simpson
+     * @param lista_potencia Linkedlist segundo factor para la regla de Simpson
+     * @return un objeto de tipo LinkedList
+     * @since incluido desde la version 1.0
+    */
     public LinkedList obtenerFXi(LinkedList lista_potencia, Double division_gamma)
     {
         LinkedList lista_FXi = new LinkedList();
@@ -154,7 +203,13 @@ public final class Distribucion
         return lista_FXi;
     }
     
-    /* Metodo */
+    /**
+     * Método que obtiene los términos finales para la sumatoria que brinda
+     * el resultado final
+     * @param lista_FXi Linkedlist de F(Xi) de la regla de Simpson
+     * @return un objeto de tipo LinkedList
+     * @since incluido desde la version 1.0
+    */
     public LinkedList obtenerTerms(LinkedList lista_FXi)
     {
         LinkedList lista_terms = new LinkedList();
@@ -168,7 +223,12 @@ public final class Distribucion
         return lista_terms;
     }
     
-    /* Metodo sumatoria */
+    /**
+     * Método que permite realizar la sumatoria total de una lista ligada
+     * @param lista Linkedlist que se va a sumar
+     * @return un double que representa la sumatoria realizada
+     * @since incluido desde la version 1.0
+    */
     public double realizarSumatoria(LinkedList lista)
     {
         double sumatoria = 0.0;
